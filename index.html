@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <!--
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#595d12">
+	<meta name="msapplication-TileColor" content="#000000">
+	<meta name="theme-color" content="#000000">
+	-->
+	<title>SNOWPLOW OPERATIONS MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--
+    <link rel="stylesheet" href="style5.css">
+    -->
+	<!-- Scrollbar Custom CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+	
+</head>
+<body>
+
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader">
+            <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                <h4 class="text-white">About</h4>
+                <p class="text-muted">
+                    A real time data (images, location and temperature) collecting app
+                </p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                <h4 class="text-white">Contact</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white">Pratiksha Acharya</a></li>
+                    <li><a href="#" class="text-white">University of Texas at Arlington</a></li>
+                    <li><a href="#" class="text-white">Email me</a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <!--Icon got from https://freesvg.org/snow-plow  -->
+                <img height="auto" width="30%"
+                    src="./snowplow.svg" 
+                    alt="A snowplow icon"
+                    />
+                <!--
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>               
+                -->    
+                <strong><h4 class="">SOMS</h4></strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            </div>
+        </div>
+    </header>
+          
+
+    <main role="main">
+
+            <section class="jumbotron text-center">
+              <div class="container">
+                <h1 class="jumbotron-heading">Snowplow Operations Management System(SOMS)</h1>
+                <p class="lead text-muted">Apps captures data (images and locations) in every 10 minute interval while vehicle is running above 5 miles/hour</p>
+                <p  id="screenshot" style="text-align:center;" >
+                  <div id="err-msg"></div>
+                  <video class="videostream" style="width: 35%;height: auto;" autoplay=""></video>
+                </p>
+                <p>
+                  
+                  <button type="button" class="btn btn-primary my-2" id="video-button">Open Video</button>
+                  <button type="button" class="btn btn-primary my-2" id="screenshot-button">Take Picture</button>
+                </p>
+              </div>
+            </section>
+      
+            <div class="album py-5 bg-light">
+              <canvas style="display:none;"></canvas>
+              <div class="container">
+      
+                <div class="row" id="photo-holder">                
+                </div>
+              </div>
+            </div>
+      
+          </main>
+      
+          <footer class="text-muted">
+            <div class="container">
+              <p class="float-right">
+                <a href="#">Back to top</a>
+              </p>
+              <p>SOMS is &copy; research project at UTA</p>
+            </div>
+          </footer>
+	
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    //Iteration Controller; only want to take photo every one minute regardless of location changes  
+    const INTERVAL_IN_MINUTE = 1;
+
+    //store time when last photo was taken 
+    let lastPhotoTakenTime;
+
+    //Video tag for streaming 
+    const VIDEO = document.querySelector('video');
+
+    //last recorded longitude and latitude.
+    let lastRecordedLongitude, lastRecordedLatitude;
+
+    //Starting to stream video 
+    const captureVideoButton = document.querySelector('#video-button');
+    const screenshotButton = document.querySelector('#screenshot-button');
+    const photoHolder = document.querySelector('#photo-holder');
+    const canvas = document.createElement('canvas');
+
+    const constraints = { 
+        video : {facingMode: 'environment'}
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).
+        then(handleSuccess).catch(handleError);
+
+    //Starting to watch geolocation   
+    if(navigator.geolocation)
+    {           
+        //let options = {enableHighAccuracy: true,timeout: 30000,maximumAge: 0, frequency: 3000};
+        let options = {enableHighAccuracy: false, timeout: 60000,maximumAge: 0};
+        geoLoc = navigator.geolocation;
+        watchID = geoLoc.watchPosition(capturePhoto, showError, options);
+    } 
+    else 
+    {
+        handleError("Sorry, browser does not support geolocation!");
+    }
+
+    //Setting up some manual action as well. 
+    screenshotButton.onclick = VIDEO.onclick = capturePhoto;
+
+    const exactConstraints = {
+        video: {
+            width: {
+                min: 1280,
+                ideal: 1920,
+                max: 2560,
+            },
+            height: {
+                min: 720,
+                ideal: 1080,
+                max: 1440
+            },
+        }
+    };
+    
+
+    //screenshotButton.onclick = video.onclick = function() {
+    function capturePhoto(user_location){
+        console.log("User Location:", user_location);
+        let x = document.getElementById("err-msg");
+        let lng, lat;
+
+        if(user_location == null || user_location.target)
+        {
+            //Came from Button click 
+            x.innerHTML = x.innerHTML + `<div class="alert alert-warning" role="alert">Photo being taken manually.</div>`;           
+        }
+        else 
+        {
+            lastRecordedLongitude = user_location.coords.longitude;
+            lastRecordedLatitude = user_location.coords.latitude;
+        }
+        lng = lastRecordedLongitude;
+        lat = lastRecordedLatitude;
+
+        if (lastPhotoTakenTime == undefined) 
+        {
+            //First time call, initializing stuffs
+            lastPhotoTakenTime = new Date();
+            return;
+        }
+
+        if (diff_minutes(new Date(), lastPhotoTakenTime) < INTERVAL_IN_MINUTE)
+        {
+            console.log("Photo was taken less than a minute ago.");
+            
+            x.innerHTML = x.innerHTML + `<div class="alert alert-warning" role="alert">Photo was taken less than a minute ago. ${new Date().toLocaleString()}</div>`
+            return;
+        }
+        x.innerHTML = x.innerHTML + `<div class="alert alert-info" role="alert">Taking Photo...${new Date().toLocaleString()}</div>`
+
+        
+        canvas.width = VIDEO.videoWidth;
+        canvas.height = VIDEO.videoHeight;
+        canvas.getContext('2d').drawImage(VIDEO, 0, 0);
+        // Other browsers will fall back to image/png
+
+
+        lastPhotoTakenTime = new Date();
+
+        let imgId = `${lastPhotoTakenTime.getSeconds()}${lastPhotoTakenTime.getMilliseconds()}`;
+        photoHolder.innerHTML = photoHolder.innerHTML + `
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" id="img-${imgId}" src="${canvas.toDataURL('image/webp')}" alt="Card image cap">
+                    <div class="card-body">
+                    <p class="card-text">Longitude: ${lng}, Lattitude: ${lat}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                        <button type="button" download="photo-${imgId}.jpg" id="download-${imgId}" onClick="downloadImg(event);" class="btn btn-sm btn-outline-secondary">Download</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                        </div>
+                        <small class="text-muted">${new Date().toLocaleString()}</small>
+                    </div>
+                    </div>
+                </div>
+            </div>       
+        `;
+    };
+
+    //https://stackoverflow.com/questions/10473932/browser-html-force-download-of-image-from-src-dataimage-jpegbase64
+    //https://blog.logrocket.com/programmatic-file-downloads-in-the-browser-9a5186298d5c/
+    function downloadImg(event)
+    {
+        console.log(event);
+        let idOfBtnClicked = event.toElement.id;
+        let idOfImgToDownload = idOfBtnClicked.replace("download", "img");
+
+        let imgElement = document.querySelector(`#${idOfImgToDownload}`);
+
+        var url = imgElement.src.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
+        //window.open(url);
+        location.href = url;
+
+        /*
+        let imgData = atob(imgElement.src.split(',')[1]);
+        let arrayBuffer = new ArrayBuffer(imgData.length);
+
+        let view = new Uint8Array(arrayBuffer);
+
+        for (var i=0; i<imgData.length; i++) {
+            view[i] = imgData.charCodeAt(i) & 0xff;
+        }
+        try {
+            // This is the recommended method:
+            let blob = new Blob([arraybuffer], {type: 'application/octet-stream'});
+        } catch (e) {
+            // The BlobBuilder API has been deprecated in favour of Blob, but older
+            // browsers don't know about the Blob constructor
+            // IE10 also supports BlobBuilder, but since the `Blob` constructor
+            //  also works, there's no need to add `MSBlobBuilder`.
+            var bb = new (window.WebKitBlobBuilder || window.MozBlobBuilder);
+            bb.append(arraybuffer);
+            let blob = bb.getBlob('application/octet-stream'); // <-- Here's the Blob
+        }
+        // Use the URL object to create a temporary URL
+        let url = (window.webkitURL || window.URL).createObjectURL(blob);
+        location.href = url; // <-- Download!
+        */
+    }
+
+    function handleSuccess(stream) {
+        screenshotButton.disabled = false;
+        VIDEO.srcObject = stream;
+    }
+
+
+    function handleError(error) {
+        console.error('Error: ', error);
+        let x = document.getElementById("err-msg");
+        x.innerHTML = x.innerHTML + `<div class="alert alert-danger" role="alert">Error: ${error}</div>`;
+    }
+
+    function diff_minutes(dt2, dt1) 
+    {
+        let diff =(dt2.getTime() - dt1.getTime()) / 1000;
+        diff /= 60;
+        return Math.abs(diff); 
+    }
+    const hdConstraints = {
+        video: {width: {min: 1280}, height: {min: 720}}
+    };
+
+    const vgaConstraints = {
+        video: {width: {exact: 640}, height: {exact: 480}}
+    };
+
+    /*
+    const video = document.querySelector('video');
+    
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {video.srcObject = stream});
+
+    */
+    function snapshot()
+    {
+
+    }
+
+    function run()
+    {
+        console.log("Running Application");
+        /*
+        let gyroscope = new Gyroscope({frequency: 5});
+        
+        gyroscope.addEventListener('reading', e => {
+            console.log("Angular velocity along the X-axis " + gyroscope.x);
+            console.log("Angular velocity along the Y-axis " + gyroscope.y);
+            console.log("Angular velocity along the Z-axis " + gyroscope.z);
+          });
+        gyroscope.start();
+        */
+
+        if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices)
+        {
+            console.log("Let's get this party started")
+
+            //Requesting user permission 
+            navigator.mediaDevices.getUserMedia({video: true});
+
+        }
+        else 
+        {
+            console.log("User Media Is NOT supported");
+        }
+
+        
+        getLocation();
+       
+    }
+
+
+    /*
+    Sample Response 
+    {
+        deviceId: "23e77f76e308d9b56cad920fe36883f30239491b8952ae36603c650fd5d8fbgj",
+        groupId: "e0be8445bd846722962662d91c9eb04ia624aa42c2ca7c8e876187d1db3a3875",
+        kind: "audiooutput",
+        label: "",
+    }
+    */
+    async function getDevices() 
+    {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        
+    }
+
+
+
+    //https://stackoverflow.com/questions/5010288/how-to-make-a-function-wait-until-a-callback-has-been-called-using-node-js
+    function getLocation() {
+        if (navigator.geolocation) {           
+            //navigator.geolocation.getCurrentPosition(showPosition, showError);
+            navigator.geolocation.getCurrentPosition(function(position){
+                    console.log(position);
+                    var user_position = {};
+                    user_position.lat = position.coords.latitude; 
+                    user_position.lng = position.coords.longitude; 
+                    callback(user_position);
+                }, showError)
+        
+        } else {
+            console.error('Error: Geolocation is not supported by this browser', error);
+        }
+    }
+
+    function showPosition(position) {
+        console.log("Position Object: ",position);
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        
+        /*
+        var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
+        +latlon+"&zoom=14&size=400x300&sensor=false&key=YOUR_KEY";
+
+        document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+        */
+    }
+
+
+    function showError(error) {
+        let x = document.getElementById("err-msg");
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+            x.innerHTML = x.innerHTML + '<div class="alert alert-danger" role="alert">User denied the request for Geolocation.</div>';
+            break;
+            case error.POSITION_UNAVAILABLE:
+            x.innerHTML = x.innerHTML +'<div class="alert alert-danger" role="alert">Location information is unavailable.</div>'; 
+            break;
+            case error.TIMEOUT:
+            x.innerHTML = x.innerHTML +'<div class="alert alert-danger" role="alert">The request to get user location timed out.</div>';
+            break;
+            case error.UNKNOWN_ERROR:
+            x.innerHTML = x.innerHTML +'<div class="alert alert-danger" role="alert">An unknown error occurred.</div>';
+            break;
+        }
+    }
+    /*
+	$(document).ready(function () {
+		$("#sidebar").mCustomScrollbar({
+			theme: "minimal"
+		});
+
+		$('#dismiss, .overlay, .collapsesidebar').on('click', function () {
+			$('#sidebar').removeClass('active');
+			$('.overlay').removeClass('active');
+		});
+
+		$('#sidebarCollapse').on('click', function () {
+			$('#sidebar').addClass('active');
+			$('.overlay').addClass('active');
+			$('.collapse.in').toggleClass('in');
+			$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+		});
+	});
+
+	window.addEventListener("load", function() {
+		var f = document.getElementById('blink');
+		setInterval(function() {
+			f.style.opacity = (f.style.opacity == '0' ? '1' : '0');
+		}, 500);
+	}, false);
+    */
+</script>
+</body>
+
+</html>
